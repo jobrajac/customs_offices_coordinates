@@ -17,4 +17,8 @@ build/
 .idea/
 
 # Environment variables
-.env 
+.env
+
+# Customs offices data files
+RD_ICS2_CustomsOffices.zip
+RD_ICS2_CustomsOffices.xml

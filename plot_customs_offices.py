@@ -30,7 +30,7 @@ def create_map(data):
         
         # Add marker with popup
         folium.Marker(
-            location=[row['latitude'], row['longitude']],
+            location=[row['new_latitude'], row['new_longitude']],
             popup=folium.Popup(popup_content, max_width=300),
             tooltip=row['name'],
             icon=folium.Icon(color='blue', icon='info-sign')
@@ -45,10 +45,10 @@ def main():
     try:
         # Read the CSV file
         print("Reading customs offices data...")
-        df = pd.read_csv('customs_offices_coordinates.csv')
+        df = pd.read_csv('customs_offices_coordinates_updated.csv')
         
         # Remove rows with missing coordinates
-        df_clean = df.dropna(subset=['latitude', 'longitude'])
+        df_clean = df.dropna(subset=['new_latitude', 'new_longitude'])
         
         print(f"Found {len(df_clean)} offices with valid coordinates out of {len(df)} total offices")
         
@@ -72,7 +72,7 @@ def main():
         print(country_stats)
         
     except FileNotFoundError:
-        print("Error: Could not find 'customs_offices_coordinates.csv'")
+        print("Error: Could not find 'customs_offices_coordinates_updated.csv'")
         print("Please run main.py first to generate the coordinates file.")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
