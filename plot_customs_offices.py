@@ -1,6 +1,7 @@
 import pandas as pd
 import folium
 from folium import plugins
+import os
 
 def create_map(data):
     """Create an interactive map with customs offices locations."""
@@ -30,25 +31,32 @@ def create_map(data):
         
         # Add marker with popup
         folium.Marker(
-            location=[row['new_latitude'], row['new_longitude']],
+            location=[row['latitude'], row['longitude']],
             popup=folium.Popup(popup_content, max_width=300),
             tooltip=row['name'],
             icon=folium.Icon(color='blue', icon='info-sign')
         ).add_to(m)
     
-    # Add marker cluster support for better performance with many markers
-    marker_cluster = plugins.MarkerCluster().add_to(m)
-    
     return m
+
 
 def main():
     try:
+        input_file = 'customs_offices_geocoded.csv'
+        output_html = 'customs_offices_map.html'
+        
+        # Check if input file exists
+        if not os.path.exists(input_file):
+            print(f"Error: {input_file} not found.")
+            print("Please run geocode_offices.py first to generate the coordinates file.")
+            return
+        
         # Read the CSV file
         print("Reading customs offices data...")
-        df = pd.read_csv('customs_offices_coordinates_updated.csv')
+        df = pd.read_csv(input_file)
         
         # Remove rows with missing coordinates
-        df_clean = df.dropna(subset=['new_latitude', 'new_longitude'])
+        df_clean = df.dropna(subset=['latitude', 'longitude'])
         
         print(f"Found {len(df_clean)} offices with valid coordinates out of {len(df)} total offices")
         
@@ -60,20 +68,17 @@ def main():
         print("Creating map...")
         m = create_map(df_clean)
         
-        # Save the map
-        output_file = 'customs_offices_map.html'
-        m.save(output_file)
+        # Save the interactive HTML map
+        m.save(output_html)
         print(f"\nMap has been created successfully!")
-        print(f"Open '{output_file}' in your web browser to view the interactive map")
+        print(f"Open '{output_html}' in your web browser to view the interactive map")
         
         # Print some statistics
         print(f"\nStatistics by country:")
         country_stats = df_clean.groupby('country').size().sort_values(ascending=False)
         print(country_stats)
+      
         
-    except FileNotFoundError:
-        print("Error: Could not find 'customs_offices_coordinates_updated.csv'")
-        print("Please run main.py first to generate the coordinates file.")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
