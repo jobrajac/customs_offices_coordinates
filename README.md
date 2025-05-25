@@ -1,4 +1,4 @@
-# Customs Offices Coordinates Project
+# European Customs Offices Coordinates
 
 This project downloads and processes customs office locations from the EU's official database. It includes geocoding functionality using Google Maps API and interactive map visualization.
 
