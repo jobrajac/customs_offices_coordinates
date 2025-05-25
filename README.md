@@ -61,7 +61,7 @@ python plot_customs_offices.py
 
 The project generates an interactive map showing all customs offices with their details:
 
-![Customs Offices Map](images/map_sample.png)
+![Customs Offices Map](./images/europe_pins.png)
 
 ## Data Sources
 
